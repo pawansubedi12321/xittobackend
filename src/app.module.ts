@@ -14,6 +14,7 @@ import { EventsModule } from './ws-events/events.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
+import { AssistanceModule } from './assistance/assistance.module';
 
 @Module({
   imports: [
@@ -39,6 +40,8 @@ import { CategoryModule } from './category/category.module';
     UsersModule,
 
     CategoryModule,
+
+    AssistanceModule,
 
 
   ],

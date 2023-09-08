@@ -5,11 +5,17 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import { ResponseInterceptor } from './core/interceptors/response.interceptor';
 import * as compression from 'compression';
+import path, { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule,{});
 
+  // app.useStaticAssets(path.join(__dirname, '..', '/'));
+  
   app.setGlobalPrefix('api/v1');
+
+  app.useStaticAssets(join(__dirname, '..', '/'));
 
   /*
       protect your app from some well-known web vulnerabilities by setting HTTP headers appropriately.
@@ -28,6 +34,7 @@ async function bootstrap() {
 
   // Compression can greatly decrease the size of the response body, thereby increasing the speed of a web app.
   app.use(compression());
+
 
   app.useGlobalPipes(
     new ValidationPipe({

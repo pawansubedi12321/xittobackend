@@ -16,6 +16,7 @@ import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { AssistanceModule } from './assistance/assistance.module';
 import { ProblemsModule } from './problems/problems.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -45,6 +46,8 @@ import { ProblemsModule } from './problems/problems.module';
     AssistanceModule,
 
     ProblemsModule,
+
+    BrandModule,
 
 
   ],

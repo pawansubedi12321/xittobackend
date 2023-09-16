@@ -1,0 +1,25 @@
+import { Category } from "src/category/entities/category.entity";
+import { GenericEntity } from "src/core/generic.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+
+@Entity('problems')
+export class Problem extends GenericEntity {
+    @ManyToOne(() => Category,)
+    @JoinColumn({ name: 'category_id', })
+    category: string;
+
+    @Column({unique: true})
+    name: string
+
+    @Column()
+    price: string
+    
+    @Column()
+    estTime: string
+
+    @Column()
+    imagePath: string
+
+    @Column()
+    shortDescription: string
+}

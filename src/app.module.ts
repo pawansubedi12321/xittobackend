@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { AssistanceModule } from './assistance/assistance.module';
+import { ProblemsModule } from './problems/problems.module';
 
 @Module({
   imports: [
@@ -42,6 +43,8 @@ import { AssistanceModule } from './assistance/assistance.module';
     CategoryModule,
 
     AssistanceModule,
+
+    ProblemsModule,
 
 
   ],

@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
+import { BASE_URL } from 'src/core/constant/constant';
 
 @Injectable()
 export class AuthService {
@@ -33,6 +34,9 @@ export class AuthService {
           role: user.role,
         };
         const accessToken = await this.jwtService.signAsync(payload);
+        if(user.userDetails.profile_url !=null){
+          user.userDetails.profile_url = `${BASE_URL}${user.userDetails.profile_url}`
+        }
         return {
           ...payload,
           phone: user.phone,

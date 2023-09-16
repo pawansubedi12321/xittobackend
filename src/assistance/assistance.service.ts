@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Assistance } from './entities/assistance.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/utils/enum/role.enum';
+import { BASE_URL } from 'src/core/constant/constant';
 
 @Injectable()
 export class AssistanceService {
@@ -32,10 +33,19 @@ export class AssistanceService {
    try {
     if(user.role == Role.ADMIN){
       let assistances = await this.assistanceRepo.createQueryBuilder('assistance').leftJoinAndSelect('assistance.category','category').getMany(); 
-      return assistances;
+      let updateAssistance = assistances.map((element)=>{
+        element.category['imagePath'] = `${BASE_URL}${element.category['imagePath']}`;
+        return element;
+      });
+      return updateAssistance;
     }else{
       let assistance = await this.assistanceRepo.createQueryBuilder('assistance').leftJoinAndSelect('assistance.category','category').where('assistance.user = :user',{user: user.id}).getMany();
-      return assistance;
+      // return assistance;
+      let updateAssistance = assistance.map((element)=>{
+        element.category['imagePath'] = `${BASE_URL}${element.category['imagePath']}`;
+        return element;
+      });
+      return updateAssistance;
     }
    } catch (error) {
     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);

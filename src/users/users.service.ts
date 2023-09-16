@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { UserDetails } from './entities/userdetails.entity';
 import { log } from 'console';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
+import { BASE_URL } from 'src/core/constant/constant';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +16,6 @@ export class UsersService {
     @InjectRepository(UserDetails) private readonly userDetailsRepo: Repository<UserDetails>,
     private readonly bcryptService: BcryptService,
   ) { }
-
 
   //create user 
   async create(image: Express.Multer.File, createUserDto: CreateUserDto) {
@@ -94,10 +94,14 @@ export class UsersService {
   async findAll() {
     try {
       let users = await this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.userDetails', 'userDetails').getMany(); 
-      if (users != null) {
-        return users;
-      }
-      throw new HttpException("User not found", HttpStatus.BAD_REQUEST);
+      
+      let updatedUsers = users.map((element)=>{
+        if(element.userDetails.profile_url !=null){
+          element.userDetails.profile_url = `${BASE_URL}${element.userDetails.profile_url}`;
+        }
+        return element;
+      });
+      return updatedUsers;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

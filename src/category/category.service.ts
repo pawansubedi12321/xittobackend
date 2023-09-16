@@ -29,7 +29,8 @@ export class CategoryService {
     try {
      let categories = await this.catRepo.createQueryBuilder('category').getMany();
      let updatedCategory = categories.map((elemet)=>{
-      return {id: elemet.id,name: elemet.name,imagePath: `${process.env.BASE_URL}/${elemet.imagePath}`};
+      elemet.imagePath = `${process.env.BASE_URL}/${elemet.imagePath}`;
+      return elemet;
      });
      return updatedCategory; 
     } catch (error) {

@@ -2,11 +2,16 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 export class GenericEntity {
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @Exclude()
   @CreateDateColumn()
   created_at: Date;
@@ -19,11 +24,11 @@ export class GenericEntity {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @Exclude()
-  @Column()
-  created_by: string;
+  // @Exclude()
+  // @Column()
+  // created_by: string;
 
-  @Exclude()
-  @Column()
-  updated_by: string;
+  // @Exclude()
+  // @Column()
+  // updated_by: string;
 }

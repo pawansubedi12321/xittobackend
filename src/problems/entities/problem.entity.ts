@@ -1,6 +1,7 @@
+import { Brand } from "src/brand/entities/brand.entity";
 import { Category } from "src/category/entities/category.entity";
 import { GenericEntity } from "src/core/generic.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('problems')
 export class Problem extends GenericEntity {
@@ -13,7 +14,7 @@ export class Problem extends GenericEntity {
 
     @Column()
     price: string
-    
+
     @Column()
     estTime: string
 
@@ -22,4 +23,7 @@ export class Problem extends GenericEntity {
 
     @Column()
     shortDescription: string
+
+    @OneToMany(()=> Brand, (brand) => brand.problem)
+    brands: Brand[]
 }

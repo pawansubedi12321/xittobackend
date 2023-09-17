@@ -30,7 +30,7 @@ export class ProblemsService {
 
   async findAll() {
     try {
-      let problems = await this.problemRepo.createQueryBuilder('problems').getMany();
+      let problems = await this.problemRepo.createQueryBuilder('problems').leftJoinAndSelect('problems.brands','brands').getMany();
       let updatedProblem = problems.map((elemet)=>{
        elemet.imagePath = `${BASE_URL}/${elemet.imagePath}`;
        return elemet;

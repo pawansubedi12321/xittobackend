@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity('brands')
 export class Brand extends GenericEntity {
-    @ManyToOne(() => Problem,)
+    @ManyToOne(() => Problem,{ onDelete: 'CASCADE' })
     @JoinColumn({ name: 'problem_id', })
     problem: string;
     

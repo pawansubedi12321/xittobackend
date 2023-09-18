@@ -24,6 +24,6 @@ export class Problem extends GenericEntity {
     @Column()
     shortDescription: string
 
-    @OneToMany(()=> Brand, (brand) => brand.problem)
+    @OneToMany(()=> Brand, (brand) => brand.problem,{ onDelete: 'CASCADE' })
     brands: Brand[]
 }

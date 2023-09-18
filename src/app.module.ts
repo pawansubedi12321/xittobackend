@@ -17,6 +17,7 @@ import { CategoryModule } from './category/category.module';
 import { AssistanceModule } from './assistance/assistance.module';
 import { ProblemsModule } from './problems/problems.module';
 import { BrandModule } from './brand/brand.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -48,6 +49,8 @@ import { BrandModule } from './brand/brand.module';
     ProblemsModule,
 
     BrandModule,
+
+    BookingModule,
 
 
   ],

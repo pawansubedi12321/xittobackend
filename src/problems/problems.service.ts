@@ -28,9 +28,9 @@ export class ProblemsService {
     }
   }
 
-  async findAll() {
+  async findAll(catId : string) {
     try {
-      let problems = await this.problemRepo.createQueryBuilder('problems').leftJoinAndSelect('problems.brands','brands').getMany();
+      let problems = await this.problemRepo.createQueryBuilder('problems').leftJoinAndSelect('problems.brands','brands').where('problems.category = :id',{id: catId}).getMany();
       let updatedProblem = problems.map((elemet)=>{
        elemet.imagePath = `${BASE_URL}/${elemet.imagePath}`;
        return elemet;
@@ -49,7 +49,15 @@ export class ProblemsService {
     return `This action updates a #${id} problem`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} problem`;
+  async remove(id: string) {
+    try {
+      let deleteData= await this.problemRepo.createQueryBuilder("problem").delete().from(Problem).where('id = :id', { id: id }).execute();
+      if(deleteData.affected==0){
+       throw new HttpException("Error on deleting problems", HttpStatus.BAD_REQUEST);
+      }
+      return;
+      } catch (error) {
+       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
   }
 }

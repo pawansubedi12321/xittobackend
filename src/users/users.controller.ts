@@ -9,14 +9,15 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt_auth.guards';
 import { RolesGuard } from 'src/auth/guards/role_guard';
 import { HasRoles } from 'src/core/decorators/has-role.decorator';
 import { Role } from 'src/utils/enum/role.enum';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Users")
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
   @Post('create-user')
   @UseInterceptors(FileInterceptor('image'))
-  @UseInterceptors(FileInterceptor)
+  // @UseInterceptors(FileInterceptor)
   @ResponseMessage("User added successfully")
   @UseInterceptors(ClassSerializerInterceptor)
   create(@UploadedFile() image: Express.Multer.File, @Body() createUserDto: CreateUserDto) {

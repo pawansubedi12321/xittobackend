@@ -18,6 +18,7 @@ import { AssistanceModule } from './assistance/assistance.module';
 import { ProblemsModule } from './problems/problems.module';
 import { BrandModule } from './brand/brand.module';
 import { BookingModule } from './booking/booking.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -51,6 +52,8 @@ import { BookingModule } from './booking/booking.module';
     BrandModule,
 
     BookingModule,
+
+    TransactionModule,
 
 
   ],

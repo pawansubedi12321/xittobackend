@@ -7,12 +7,13 @@ import { ResponseInterceptor } from './core/interceptors/response.interceptor';
 import * as compression from 'compression';
 import path, { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule,{});
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
 
   // app.useStaticAssets(path.join(__dirname, '..', '/'));
-  
+
   app.setGlobalPrefix('api/v1');
 
   app.useStaticAssets(join(__dirname, '..', '/'));
@@ -50,6 +51,16 @@ async function bootstrap() {
 
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
+
+  const config = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.APP_PORT || 8080, () => {
     console.log(`app running in port ${process.env.APP_PORT}`);

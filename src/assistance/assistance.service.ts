@@ -6,11 +6,13 @@ import { Assistance } from './entities/assistance.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/utils/enum/role.enum';
 import { BASE_URL } from 'src/core/constant/constant';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AssistanceService {
   constructor(
     @InjectRepository(Assistance) private readonly assistanceRepo: Repository<Assistance>,
+    @InjectRepository(User) private readonly userRepo: Repository<User>,
   ){}
   async create(createAssistanceDto: CreateAssistanceDto, user: any) {
     // return createAssistanceDto;
@@ -20,6 +22,7 @@ export class AssistanceService {
       if(checkAllready != null){
       throw new HttpException("You have already applied for this service", HttpStatus.BAD_REQUEST);
       }
+      await this.userRepo.createQueryBuilder('user').update(User).set({role : Role.WORKER}).where("id = :id", { id: user.id }).execute();
       let nAssistance = await this.assistanceRepo.create({
         ...createAssistanceDto,user: user.id
       },);

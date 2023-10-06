@@ -27,7 +27,7 @@ export class UsersController {
   @Get("all")
   @ResponseMessage("User fetched successfully")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @HasRoles(Role.USER)
+  @HasRoles(Role.ADMIN)
   @UseInterceptors(ClassSerializerInterceptor)
   findAll() {
     return this.usersService.findAll();

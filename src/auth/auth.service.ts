@@ -6,6 +6,7 @@ import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { BASE_URL } from 'src/core/constant/constant';
+import { ChangePasswordDto } from './dto/change.password.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,15 +14,15 @@ export class AuthService {
     private jwtService: JwtService,
     private bcryptService: BcryptService,
     private usersService: UsersService,
-  ){}
+  ) { }
 
 
-  async login(loginDto : LoginDto){
+  async login(loginDto: LoginDto) {
 
     let user = await this.usersService.findOneByPhone(
       loginDto.phone,
     );
-    if(user !=null){
+    if (user != null) {
       let comparePassword = await this.bcryptService.comparePassword(
         loginDto.password,
         user.password,
@@ -34,7 +35,7 @@ export class AuthService {
           role: user.role,
         };
         const accessToken = await this.jwtService.signAsync(payload);
-        if(user.userDetails.profile_url !=null){
+        if (user.userDetails.profile_url != null) {
           user.userDetails.profile_url = `${BASE_URL}${user.userDetails.profile_url}`
         }
         return {
@@ -50,7 +51,37 @@ export class AuthService {
     }
     throw new HttpException('Please enter a valid phone number', HttpStatus.BAD_REQUEST);
   }
-  
+
+
+  async changePassword(changePasswordDto: ChangePasswordDto, userId: string) {
+    // return userId;
+    try {
+      let user = await this.usersService.findOne(userId);
+      // return user;
+      if (user != null) {
+        let comparePassword = await this.bcryptService.comparePassword(
+          changePasswordDto.currentPassword,
+          user.password,
+        );
+        // return comparePassword;
+        if (comparePassword) {
+          const hashPassword = await this.bcryptService.hashPassword(
+            changePasswordDto.password,
+          );
+          // return hashPassword;
+          await this.usersService.changePassword(userId, hashPassword);
+        } else {
+          throw new HttpException("Please enter a valid password", HttpStatus.BAD_REQUEST);
+        }
+      } else {
+        throw new HttpException("Please enter a valid password", HttpStatus.BAD_REQUEST);
+      }
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+
+    }
+  }
+
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }

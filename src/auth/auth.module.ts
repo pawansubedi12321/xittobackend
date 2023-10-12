@@ -23,4 +23,4 @@ import { UserDetails } from 'src/users/entities/userdetails.entity';
   providers: [AuthService, JwtStrategy,
     BcryptService, UsersService]
 })
-export class AuthModule { }
+export class AuthModule {}

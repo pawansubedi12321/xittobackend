@@ -8,6 +8,7 @@ import { UserDetails } from './entities/userdetails.entity';
 import { log } from 'console';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { BASE_URL } from 'src/core/constant/constant';
+import { use } from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -107,11 +108,24 @@ export class UsersService {
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
+    // return id;
     try {
-
+      let user = await this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.userDetails', 'userDetails').where("user.id = :id", { id: id }).getOne(); 
+      return user;
     } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
+  async changePassword(id: string, password : string){
+    // return id;
+    try {
+      await this.userRepo.createQueryBuilder('user').update(User).set({
+        password: password
+      }).where("id = :id", {id: id}).execute();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 

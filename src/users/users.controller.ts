@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, ClassSerializerInterceptor, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,6 +10,7 @@ import { RolesGuard } from 'src/auth/guards/role_guard';
 import { HasRoles } from 'src/core/decorators/has-role.decorator';
 import { Role } from 'src/utils/enum/role.enum';
 import { ApiTags } from '@nestjs/swagger';
+import { log } from 'console';
 
 @ApiTags("Users")
 @Controller('users')
@@ -33,6 +34,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -40,6 +42,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(id);
     return this.usersService.update(+id, updateUserDto);
   }
 

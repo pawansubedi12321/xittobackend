@@ -19,6 +19,7 @@ import { ProblemsModule } from './problems/problems.module';
 import { BrandModule } from './brand/brand.module';
 import { BookingModule } from './booking/booking.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { HelpModule } from './help/help.module';
 
 @Module({
   imports: [
@@ -54,6 +55,8 @@ import { TransactionModule } from './transaction/transaction.module';
     BookingModule,
 
     TransactionModule,
+
+    HelpModule,
 
 
   ],

@@ -20,6 +20,7 @@ import { BrandModule } from './brand/brand.module';
 import { BookingModule } from './booking/booking.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { HelpModule } from './help/help.module';
+import { OtpModule } from './otp/otp.module';
 
 @Module({
   imports: [
@@ -57,6 +58,8 @@ import { HelpModule } from './help/help.module';
     TransactionModule,
 
     HelpModule,
+
+    OtpModule,
 
 
   ],

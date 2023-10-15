@@ -121,9 +121,10 @@ export class UsersService {
   async changePassword(id: string, password : string){
     // return id;
     try {
-      await this.userRepo.createQueryBuilder('user').update(User).set({
+     let data = await this.userRepo.createQueryBuilder('user').update(User).set({
         password: password
       }).where("id = :id", {id: id}).execute();
+      return data;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

@@ -69,7 +69,11 @@ export class AuthService {
             changePasswordDto.password,
           );
           // return hashPassword;
-          await this.usersService.changePassword(userId, hashPassword);
+          let data = await this.usersService.changePassword(userId, hashPassword);
+          // return data;
+          return {
+            "updatePssword" :changePasswordDto.password
+          }
         } else {
           throw new HttpException("Please enter a valid password", HttpStatus.BAD_REQUEST);
         }

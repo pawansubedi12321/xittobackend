@@ -23,7 +23,7 @@ export class HelpService {
 
   async findAll() {
     try {
-      let nHelp = await this.helpRepo.createQueryBuilder().getMany();
+      let nHelp = await this.helpRepo.createQueryBuilder('help').orderBy('help.created_at', 'DESC').getMany();
       return nHelp;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -38,7 +38,15 @@ export class HelpService {
     return `This action updates a #${id} help`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} help`;
+  async remove(id: string) {
+    try {
+      let deleteData = await this.helpRepo.createQueryBuilder("help").delete().from(Help).where('id = :id', { id: id }).execute();
+      if (deleteData.affected == 0) {
+        throw new HttpException("Error on deleting help", HttpStatus.BAD_REQUEST);
+      }
+      return;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

@@ -14,7 +14,7 @@ export class HelpController {
 
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  // @HasRoles(Role.ADMIN)
+  @HasRoles(Role.ADMIN)
   @ResponseMessage('Successfully added help')
   @UseInterceptors(ClassSerializerInterceptor)
   create(@Body() createHelpDto: CreateHelpDto) {
@@ -41,7 +41,11 @@ export class HelpController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ResponseMessage('Successfully deleted help')
+  @UseInterceptors(ClassSerializerInterceptor)
   remove(@Param('id') id: string) {
-    return this.helpService.remove(+id);
+    return this.helpService.remove(id);
   }
 }

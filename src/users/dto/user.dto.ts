@@ -9,15 +9,4 @@ export class UpdateUser {
     @IsString()
     phone: string
 
-    @IsNotEmpty()
-    @IsString()
-    gender: string
-
-    @IsNotEmpty()
-    @IsString()
-    district: string
-
-    @IsNotEmpty()
-    @IsString()
-    address: string
 }

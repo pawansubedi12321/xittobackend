@@ -33,7 +33,7 @@ export class OtpService {
         phone_number: otpDto.phone_num,
       }});
       if(otp == null){
-        throw new HttpException("Please enter a valid number",HttpStatus.BAD_REQUEST);
+        throw new HttpException("Please enter a valid number or OTP",HttpStatus.BAD_REQUEST);
       }
       let date = new Date();
       let diff = getSecondsDifference( new Date(date),new Date(otp.created_at.toLocaleString()));  

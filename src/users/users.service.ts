@@ -130,8 +130,26 @@ export class UsersService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+
+  async changePhoneNumber(id: string, phone : string){
+    // return id;
+    try {
+     let data = await this.userRepo.createQueryBuilder('user').update(User).set({
+        phone: phone
+      }).where("id = :id", {id: id}).execute();
+      return data;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      let data = await this.userRepo.createQueryBuilder('user').update(User).set(updateUserDto).where("id = :id", {id: id}).execute();
+      return await this.findOne(id);
+     } catch (error) {
+       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+     }
   }
 
   remove(id: number) {

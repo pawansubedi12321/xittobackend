@@ -1,23 +1,45 @@
+import { Brand } from "src/brand/entities/brand.entity";
 import { GenericEntity } from "src/core/generic.entity";
+import { Problem } from "src/problems/entities/problem.entity";
+import { User } from "src/users/entities/user.entity";
 import { BookingStatus } from "src/utils/enum/bookingStatus";
 import { Role } from "src/utils/enum/role.enum";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { TransactionMode } from "src/utils/enum/transactionMode.enum";
+import { TransactionStatus } from "src/utils/enum/transactionStatus";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 
 @Entity('bookings')
 export class Booking extends GenericEntity{
+    @ManyToOne(() => User,)
+    @JoinColumn({name: 'user_id',})
+    bookedBy: string;
+
+    @ManyToOne(() => Problem,)
+    @JoinColumn({name: 'problem_id',})
+    bookedProblem: string;
+    
+    @Column({nullable: true})
+    selectedBrand: string;
+
+    @ManyToOne(() => User,{nullable: true})
+    @JoinColumn({name: 'worker_id',})
+    assignTo: string;
+    
+    @Column({nullable: true})
+    bookedDate: string 
 
     @Column()
-    brand: string
-    
-    @Column()
-    date: string
+    itemCount: number
+
+    @Column({nullable: true})
+    completedDate: string
 
     @Column()
     timePeriod: string
   
     @Column()
-    loaction: string
+    location: string
         
     @Column()
     problemInterval: string
@@ -26,6 +48,8 @@ export class Booking extends GenericEntity{
     description: string
 
     @Column({default: BookingStatus.PENDING})
-    status: string
-    
+    status: string  
+
+    @Column({default : TransactionMode.CASH})
+    transactionMode : string
 }

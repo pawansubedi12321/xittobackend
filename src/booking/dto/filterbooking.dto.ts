@@ -1,9 +1,7 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, isNumber } from "class-validator";
+import { IsNull } from "typeorm";
 
-export class CreateBookingDto {
-    @IsNotEmpty()
-    @IsString()
-    bookedProblem: string;
+export class FilterBookingDto {
 
     @IsOptional()
     selectedBrand: string;
@@ -11,31 +9,25 @@ export class CreateBookingDto {
     @IsOptional()
     assignTo: string;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
     bookedDate: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    itemCount: number;
+    @IsOptional()
+    itemCount: string;
 
     @IsOptional()
     completedDate: string
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
     timePeriod: string
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
     location: string
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
     problemInterval: string
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
     description: string
 
     @IsOptional()

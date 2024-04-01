@@ -49,8 +49,8 @@ export class UsersService {
         {
           ...createUserDto,
           password: hashPassword,
-          userDetails: userDetails
-          //  userDetails: detailsId,
+          userDetails: userDetails,
+                    //  userDetails: detailsId,
         }
       );
       let data = await this.userRepo.save({ ...nUser });

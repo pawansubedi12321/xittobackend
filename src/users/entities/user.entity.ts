@@ -18,7 +18,7 @@ export class User extends GenericEntity {
     password: string;
 
     @Column({nullable: false, default: Role.USER,})
-    role: Role;
+    role: string;
 
     @OneToOne(() => UserDetails)
     @JoinColumn({ name: 'user_details'})

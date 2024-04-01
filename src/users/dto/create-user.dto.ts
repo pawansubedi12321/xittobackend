@@ -28,4 +28,8 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     invite_code: string
+
+    @IsString()
+    @IsOptional()
+    role: string
 }

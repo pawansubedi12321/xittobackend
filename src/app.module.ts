@@ -15,6 +15,14 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { AssistanceModule } from './assistance/assistance.module';
+import { ProblemsModule } from './problems/problems.module';
+import { BrandModule } from './brand/brand.module';
+import { BookingModule } from './booking/booking.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { HelpModule } from './help/help.module';
+import { OtpModule } from './otp/otp.module';
+import { QuestionsModule } from './questions/questions.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -42,6 +50,22 @@ import { AssistanceModule } from './assistance/assistance.module';
     CategoryModule,
 
     AssistanceModule,
+
+    ProblemsModule,
+
+    BrandModule,
+
+    BookingModule,
+
+    TransactionModule,
+
+    HelpModule,
+
+    OtpModule,
+
+    QuestionsModule,
+
+    NotificationModule,
 
 
   ],

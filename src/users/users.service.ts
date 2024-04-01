@@ -8,6 +8,7 @@ import { UserDetails } from './entities/userdetails.entity';
 import { log } from 'console';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { BASE_URL } from 'src/core/constant/constant';
+import { use } from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -48,8 +49,8 @@ export class UsersService {
         {
           ...createUserDto,
           password: hashPassword,
-          userDetails: userDetails
-          //  userDetails: detailsId,
+          userDetails: userDetails,
+                    //  userDetails: detailsId,
         }
       );
       let data = await this.userRepo.save({ ...nUser });
@@ -107,16 +108,48 @@ export class UsersService {
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
+    // return id;
     try {
-
+      let user = await this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.userDetails', 'userDetails').where("user.id = :id", { id: id }).getOne(); 
+      return user;
     } catch (error) {
-
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async changePassword(id: string, password : string){
+    // return id;
+    try {
+     let data = await this.userRepo.createQueryBuilder('user').update(User).set({
+        password: password
+      }).where("id = :id", {id: id}).execute();
+      return data;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+
+  async changePhoneNumber(id: string, phone : string){
+    // return id;
+    try {
+     let data = await this.userRepo.createQueryBuilder('user').update(User).set({
+        phone: phone
+      }).where("id = :id", {id: id}).execute();
+      return data;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      let data = await this.userRepo.createQueryBuilder('user').update(User).set(updateUserDto).where("id = :id", {id: id}).execute();
+      return await this.findOne(id);
+     } catch (error) {
+       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+     }
   }
 
   remove(id: number) {

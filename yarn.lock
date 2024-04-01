@@ -717,7 +717,7 @@
     "webpack" "5.82.1"
     "webpack-node-externals" "3.0.0"
 
-"@nestjs/common@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.8 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.9 || ^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/common@^9.0.0", "@nestjs/common@>=6.0.0":
+"@nestjs/common@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.8 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.9 || ^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/common@^9.0.0", "@nestjs/common@^9.0.0 || ^10.0.0", "@nestjs/common@>=6.0.0":
   "integrity" "sha512-VA5XXLAvXG3vY4GqvvuevL7Ooi5RRsov+ydMlgc1rPswgxkSVWaPTqNibsP4C6y5XJtKfc4Ol+zoe2w/LeYJTQ=="
   "resolved" "https://registry.npmjs.org/@nestjs/common/-/common-9.4.1.tgz"
   "version" "9.4.1"
@@ -736,7 +736,7 @@
     "lodash" "4.17.21"
     "uuid" "9.0.0"
 
-"@nestjs/core@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/core@^7.0.9 || ^8.0.0 || ^9.0.0", "@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^9.0.0":
+"@nestjs/core@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/core@^7.0.9 || ^8.0.0 || ^9.0.0", "@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^9.0.0", "@nestjs/core@^9.0.0 || ^10.0.0":
   "integrity" "sha512-KbG0L5UVaI9kjZv3QkSyCf8Cz5lj11hy60n+NPoO0GZmJbhWkfsjletwKpwlpMeGbi7jLGTsU+HPDgprANSNEA=="
   "resolved" "https://registry.npmjs.org/@nestjs/core/-/core-9.4.1.tgz"
   "version" "9.4.1"
@@ -767,6 +767,11 @@
   "integrity" "sha512-3dHxLXs3M0GPiriAcCFFJQHoDFUuzTD5w6JDhE7TyfT89YKpe6tcCCIqOZWdXmt9AZjjK30RkHRSFF+QEnWFQg=="
   "resolved" "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-1.2.2.tgz"
   "version" "1.2.2"
+
+"@nestjs/mapped-types@2.0.2":
+  "integrity" "sha512-V0izw6tWs6fTp9+KiiPUbGHWALy563Frn8X6Bm87ANLRuE46iuBMD5acKBDP5lKL/75QFvrzSJT7HkCbB0jTpg=="
+  "resolved" "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-2.0.2.tgz"
+  "version" "2.0.2"
 
 "@nestjs/passport@^9.0.0":
   "integrity" "sha512-HplSJaimEAz1IOZEu+pdJHHJhQyBOPAYWXYHfAPQvRqWtw4FJF1VXl1Qtk9dcXQX1eKytDtH+qBzNQc19GWNEg=="
@@ -801,6 +806,17 @@
     "@angular-devkit/schematics" "16.0.1"
     "jsonc-parser" "3.2.0"
     "pluralize" "8.0.0"
+
+"@nestjs/swagger@^7.1.12":
+  "integrity" "sha512-Q1P/IE+cws0sJeNtbs+8uDalcVylpmAnaEUFenGOa3KSNnXF/8DOE84mET/uUhFXsiz9PLHK8Hy7o7B6fRpMhg=="
+  "resolved" "https://registry.npmjs.org/@nestjs/swagger/-/swagger-7.1.12.tgz"
+  "version" "7.1.12"
+  dependencies:
+    "@nestjs/mapped-types" "2.0.2"
+    "js-yaml" "4.1.0"
+    "lodash" "4.17.21"
+    "path-to-regexp" "3.2.0"
+    "swagger-ui-dist" "5.7.2"
 
 "@nestjs/testing@^9.0.0":
   "integrity" "sha512-DErwymDxsY80dH2v3eZDVOhjDv6oY6YsaI3GnUEU+gUrYa8qxxKPHfOofAsFF7SExfeJo5c8RQRfazW3bQupJA=="
@@ -1672,6 +1688,15 @@
   "integrity" "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="
   "resolved" "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   "version" "0.4.0"
+
+"axios@^1.5.1":
+  "integrity" "sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-1.5.1.tgz"
+  "version" "1.5.1"
+  dependencies:
+    "follow-redirects" "^1.15.0"
+    "form-data" "^4.0.0"
+    "proxy-from-env" "^1.1.0"
 
 "babel-code-frame@^6.26.0":
   "integrity" "sha512-XqYMR2dfdGMW+hd0IUZ2PwK+fGeFkOxZJ0wY+JaQAHzt1Zx8LcvpiZD2NiGkEG8qx0CfkAOr5xt76d1e8vG90g=="
@@ -2739,12 +2764,12 @@
   "resolved" "https://registry.npmjs.org/cjs-module-lexer/-/cjs-module-lexer-1.2.2.tgz"
   "version" "1.2.2"
 
-"class-transformer@*", "class-transformer@^0.2.0 || ^0.3.0 || ^0.4.0 || ^0.5.0", "class-transformer@^0.5.1":
+"class-transformer@*", "class-transformer@^0.2.0 || ^0.3.0 || ^0.4.0 || ^0.5.0", "class-transformer@^0.4.0 || ^0.5.0", "class-transformer@^0.5.1":
   "integrity" "sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw=="
   "resolved" "https://registry.npmjs.org/class-transformer/-/class-transformer-0.5.1.tgz"
   "version" "0.5.1"
 
-"class-validator@*", "class-validator@^0.11.1 || ^0.12.0 || ^0.13.0 || ^0.14.0", "class-validator@^0.13.2":
+"class-validator@*", "class-validator@^0.11.1 || ^0.12.0 || ^0.13.0 || ^0.14.0", "class-validator@^0.13.0 || ^0.14.0", "class-validator@^0.13.2":
   "integrity" "sha512-yBUcQy07FPlGzUjoLuUfIOXzgynnQPPruyK1Ge2B74k9ROwnle1E+NxLWnUv5OLU8hA/qL5leAE9XnXq3byaBw=="
   "resolved" "https://registry.npmjs.org/class-validator/-/class-validator-0.13.2.tgz"
   "version" "0.13.2"
@@ -3872,6 +3897,11 @@
   "integrity" "sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ=="
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   "version" "3.2.7"
+
+"follow-redirects@^1.15.0":
+  "integrity" "sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.3.tgz"
+  "version" "1.15.3"
 
 "fork-ts-checker-webpack-plugin@8.0.0":
   "integrity" "sha512-mX3qW3idpueT2klaQXBzrIM/pHw+T0B/V9KHEvNrqijTq9NFnMZU6oreVxDYcf33P8a5cW+67PjodNHthGnNVg=="
@@ -5040,7 +5070,7 @@
     "argparse" "^1.0.7"
     "esprima" "^4.0.0"
 
-"js-yaml@^4.1.0":
+"js-yaml@^4.1.0", "js-yaml@4.1.0":
   "integrity" "sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA=="
   "resolved" "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.0.tgz"
   "version" "4.1.0"
@@ -7480,6 +7510,11 @@
   "integrity" "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="
   "resolved" "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   "version" "1.0.0"
+
+"swagger-ui-dist@5.7.2":
+  "integrity" "sha512-mVZc9QVQ6pTCV5crli3+Ng+DoMPwdtMHK8QLk2oX8Mtamp4D/hV+uYdC3lV0JZrDgpNEcjs0RrWTqMwwosuLPQ=="
+  "resolved" "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.7.2.tgz"
+  "version" "5.7.2"
 
 "symbol-observable@4.0.0":
   "integrity" "sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ=="

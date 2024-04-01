@@ -8,7 +8,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt_auth.guards';
 import { RolesGuard } from 'src/auth/guards/role_guard';
 import { HasRoles } from 'src/core/decorators/has-role.decorator';
 import { Role } from 'src/utils/enum/role.enum';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('categories')
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) { }
@@ -16,6 +18,18 @@ export class CategoryController {
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HasRoles(Role.ADMIN)
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          example: "Plumber",
+          description: "This is a xitto services category name"
+        }
+      }
+    }
+  })
   @ResponseMessage("Category added successfully")
   @UseInterceptors(FileInterceptor('image'))
   @UseInterceptors(ClassSerializerInterceptor)

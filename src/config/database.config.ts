@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   entities: ['dist/**/*.entity.js'],
   logging: true,
   synchronize: true,
-  ssl: true 
+  // ssl: true 
 
   // extra:{
   //   ssl: true

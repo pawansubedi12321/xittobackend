@@ -25,6 +25,6 @@ export class Assistance extends GenericEntity{
     @JoinColumn({name: 'category_id',})
     category: string;
 
-    @Column({default: "pending"})
-    status: string
+    @Column({default : false})
+    active: Boolean
 }

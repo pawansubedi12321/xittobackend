@@ -19,6 +19,4 @@ export class UserDetails extends GenericEntity {
     @Column()
     refer_code: string
 
-    @Column({ nullable: true })
-    profile_url: string
 }

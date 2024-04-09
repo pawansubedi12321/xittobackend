@@ -1,7 +1,7 @@
-export enum BookingStatus {
-    PENDING = 'pending',
-    ONGOING = 'ongoing',
-    COMPLETED = 'completed',
+export const BookingStatus = {
+    "PENDING" : 'pending',
+    "ONGOING" : 'ongoing',
+    "COMPLETED" : 'completed',
   }
   
   

@@ -39,7 +39,7 @@ export class CategoryController {
 
 
   @Get('all')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ResponseMessage("Category fetched successfully")
   @UseInterceptors(ClassSerializerInterceptor)
   findAll() {

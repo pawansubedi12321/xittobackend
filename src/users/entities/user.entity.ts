@@ -20,7 +20,11 @@ export class User extends GenericEntity {
     @Column({nullable: false, default: Role.USER,})
     role: string;
 
-    @OneToOne(() => UserDetails)
+    
+    @Column({ nullable: true })
+    profile_url: string
+
+    @OneToOne(() => UserDetails,{ eager: true   })
     @JoinColumn({ name: 'user_details'})
     userDetails: UserDetails;
 }

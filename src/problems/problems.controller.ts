@@ -26,7 +26,7 @@ export class ProblemsController {
   }
 
   @Get('get-all/:id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ResponseMessage("Problems fetched successfully")
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Param('id') id: string) {

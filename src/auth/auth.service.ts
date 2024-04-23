@@ -33,13 +33,15 @@ export class AuthService {
           id: user.id,
           phone: user.phone ?? null,
           role: user.role,
+          
         };
         const accessToken = await this.jwtService.signAsync(payload);
-        if (user.userDetails.profile_url != null) {
-          user.userDetails.profile_url = `${BASE_URL}${user.userDetails.profile_url}`
+        if (user.profile_url != null) {
+          user.profile_url = `${process.env.BASE_URL}${user.profile_url}`
         }
         return {
           ...payload,
+          profile_url : user.profile_url,
           phone: user.phone,
           accessToken,
           name: user.name,

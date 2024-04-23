@@ -41,13 +41,13 @@ export class UsersService {
           gender: createUserDto.gender,
           location: createUserDto.address,
           refer_code: generateUniqueString(),
-          profile_url: imagePath
         }
       );
       var userDetails = await this.userDetailsRepo.save({ ...nUserDetails });
       const nUser = await this.userRepo.create(
         {
           ...createUserDto,
+          profile_url: imagePath,
           password: hashPassword,
           userDetails: userDetails,
                     //  userDetails: detailsId,
@@ -97,8 +97,8 @@ export class UsersService {
       let users = await this.userRepo.createQueryBuilder('user').leftJoinAndSelect('user.userDetails', 'userDetails').getMany(); 
       
       let updatedUsers = users.map((element)=>{
-        if(element.userDetails.profile_url !=null){
-          element.userDetails.profile_url = `${BASE_URL}${element.userDetails.profile_url}`;
+        if(element.profile_url !=null){
+          element.profile_url = `${process.env.BASE_URL}${element.profile_url}`;
         }
         return element;
       });

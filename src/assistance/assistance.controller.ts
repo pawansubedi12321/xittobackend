@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, Req, Query } from '@nestjs/common';
 import { AssistanceService } from './assistance.service';
 import { CreateAssistanceDto } from './dto/create-assistance.dto';
 import { UpdateAssistanceDto } from './dto/update-assistance.dto';
@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/auth/guards/role_guard';
 import { HasRoles } from 'src/core/decorators/has-role.decorator';
 import { Role } from 'src/utils/enum/role.enum';
 import { ResponseMessage } from 'src/core/decorators/response.decorator';
+import { log } from 'console';
 
 @Controller('assistance')
 export class AssistanceController {
@@ -25,8 +26,8 @@ export class AssistanceController {
   @UseGuards(JwtAuthGuard)
   @ResponseMessage('Assistance List fetched successfully ')
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@Req() req: any) {
-    return this.assistanceService.findAll(req.user);
+  findAll(@Req() req: any, @Query() query : any) {    
+    return this.assistanceService.findAll(req.user, query);
   }
 
   @Get(':id')
@@ -35,8 +36,12 @@ export class AssistanceController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAssistanceDto: UpdateAssistanceDto) {
-    return this.assistanceService.update(+id, updateAssistanceDto);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ResponseMessage('Successfully updated')
+  @UseInterceptors(ClassSerializerInterceptor)
+  update(@Param('id') id: string, @Body() updateAssistanceDto: any) {
+    return this.assistanceService.activeInactive(id, updateAssistanceDto);
   }
 
   @Delete(':id')

@@ -25,7 +25,7 @@ export class BookingController {
   @ResponseMessage('Booking fetched successfully')
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Req() req : any) {
-    return this.bookingService.findAll(req.user.id);
+    return this.bookingService.findAll(req.user.id, req.user.role);
   }
 
   @Get('filter')
@@ -33,7 +33,7 @@ export class BookingController {
   @ResponseMessage('Booking fetched successfully')
   @UseInterceptors(ClassSerializerInterceptor)
   filter(@Req() req : any, @Body() bookingDto: FilterBookingDto, @Query() query: any) {
-    return this.bookingService.filterBooking(req.user.id,query);
+    return this.bookingService.filterBooking(req.user.id,query,req.user.role);
   }
 
   

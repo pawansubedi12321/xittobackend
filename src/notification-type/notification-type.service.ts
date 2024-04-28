@@ -23,7 +23,7 @@ export class NotificationTypeService {
 
   async findAll(query: any) {
     try {
-      var queryBuilder = await this.ntRepo.createQueryBuilder('type');
+      var queryBuilder = await this.ntRepo.createQueryBuilder('type').select(['type.active', 'type.code','type.title']);
       if(query.active){
         queryBuilder = queryBuilder.where("type.active = :active",{active: query.active});
       }
@@ -31,7 +31,8 @@ export class NotificationTypeService {
       return nType;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }  }
+    }  
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} notificationType`;

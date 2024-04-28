@@ -24,6 +24,8 @@ import { OtpModule } from './otp/otp.module';
 import { QuestionsModule } from './questions/questions.module';
 import { NotificationModule } from './notification/notification.module';
 import { NotificationTypeModule } from './notification-type/notification-type.module';
+import { SystemStateModule } from './system-state/system-state.module';
+import { SocialMediaModule } from './social-media/social-media.module';
 
 @Module({
   imports: [
@@ -69,6 +71,10 @@ import { NotificationTypeModule } from './notification-type/notification-type.mo
     NotificationModule,
 
     NotificationTypeModule,
+
+    SystemStateModule,
+
+    SocialMediaModule,
 
   
   ],

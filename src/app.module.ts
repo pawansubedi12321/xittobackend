@@ -23,6 +23,7 @@ import { HelpModule } from './help/help.module';
 import { OtpModule } from './otp/otp.module';
 import { QuestionsModule } from './questions/questions.module';
 import { NotificationModule } from './notification/notification.module';
+import { NotificationTypeModule } from './notification-type/notification-type.module';
 
 @Module({
   imports: [
@@ -66,6 +67,8 @@ import { NotificationModule } from './notification/notification.module';
     QuestionsModule,
 
     NotificationModule,
+
+    NotificationTypeModule,
 
   
   ],

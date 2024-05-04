@@ -17,9 +17,13 @@ export class OtpService {
   async send(createOtpDto: CreateOtpDto) {
     try {
       let otp = generateOTP();
-      console.log(`This is otp  ${otp}`);
       const nOtp = await this.otpRepo.create({otp: otp,phone_number: createOtpDto.phone_num});
-      this.otpToMobilePhone(createOtpDto.phone_num, otp);
+      let type = process.env.TYPE;      
+      if(type == "dev"){
+        this.otpToMobileSlack(createOtpDto.phone_num, otp);
+      }else{
+        this.otpToMobilePhone(createOtpDto.phone_num, otp);
+      }
       return await this.otpRepo.save(nOtp);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -69,6 +73,14 @@ export class OtpService {
     await axios.post(url, {
       "auth_token": token,
       "to": phoneNum,
+      "text": `Dear ${phoneNum}, ${otp} is your code - XITT0`
+    });
+  }
+
+  async otpToMobileSlack(phoneNum: string, otp: string) {
+    let url = `https://hooks.slack.com/services/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`;
+    let token = "cd0ae1c6a181b06efa9536f443743e12efb10f9751fc507d7d11116703f8d774";
+    await axios.post(url, {
       "text": `Dear ${phoneNum}, ${otp} is your code - XITT0`
     });
   }

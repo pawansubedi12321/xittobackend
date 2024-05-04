@@ -8,10 +8,12 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { UsersService } from 'src/users/users.service';
 import { UserDetails } from 'src/users/entities/userdetails.entity';
+import { Otp } from 'src/otp/entities/otp.entity';
+import { OtpService } from 'src/otp/otp.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserDetails,User]),
+    TypeOrmModule.forFeature([UserDetails,User,Otp]),
     JwtModule.register({
       secret: process.env.SECRET_KEY || 'Ekj1a03mOJa6AAJxwE95pZnHopvzWo',
       signOptions: {
@@ -21,6 +23,6 @@ import { UserDetails } from 'src/users/entities/userdetails.entity';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy,
-    BcryptService, UsersService]
+    BcryptService, UsersService,OtpService]
 })
 export class AuthModule {}

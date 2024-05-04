@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UserDetails } from './entities/userdetails.entity';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
+import { Otp } from 'src/otp/entities/otp.entity';
+import { OtpService } from 'src/otp/otp.service';
 
 @Module({
   imports: [
@@ -30,9 +32,9 @@ import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
       }),
     },
     ),
-    TypeOrmModule.forFeature([User, UserDetails])
+    TypeOrmModule.forFeature([User, UserDetails,Otp])
   ],
   controllers: [UsersController],
-  providers: [UsersService,BcryptService]
+  providers: [UsersService,BcryptService,OtpService]
 })
 export class UsersModule { }

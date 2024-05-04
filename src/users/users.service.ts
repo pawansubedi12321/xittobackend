@@ -9,6 +9,7 @@ import { log } from 'console';
 import { BcryptService } from 'src/core/bcryptjs/bcyrpt.service';
 import { BASE_URL } from 'src/core/constant/constant';
 import { use } from 'passport';
+import { OtpService } from 'src/otp/otp.service';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,7 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(UserDetails) private readonly userDetailsRepo: Repository<UserDetails>,
     private readonly bcryptService: BcryptService,
+    private readonly otpServices: OtpService,
   ) { }
 
   //create user 
@@ -25,7 +27,8 @@ export class UsersService {
     if(image != null){
       imagePath= image.path;
     }
-    try {
+    try { 
+      await this.otpServices.verifyOtp({"phone_num": createUserDto.phone, "otp": createUserDto.otp});
       let isUserExits = await this.userRepo.createQueryBuilder('user').where('phone = :phone', {
         phone: createUserDto.phone
       }).getOne();

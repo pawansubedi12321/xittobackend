@@ -32,4 +32,8 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     role: string
+
+    @IsString()
+    @IsNotEmpty()
+    otp : string
 }

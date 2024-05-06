@@ -27,4 +27,8 @@ export class Assistance extends GenericEntity{
 
     @Column({default : false})
     active: Boolean
+
+    
+    @Column({default : false})
+    approved: Boolean
 }

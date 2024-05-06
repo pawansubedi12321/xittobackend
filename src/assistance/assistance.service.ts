@@ -33,40 +33,79 @@ export class AssistanceService {
   }
 
   async findAll(user: any, query : any) {
-   try {
+    try {
+      const { active, page, pageSize } = query;
+      const pageNumber = parseInt(page, 10) || 1;
+      const size = parseInt(pageSize, 10) || 10; // Default page size is 10
 
-    const {active} = query;
-    
-    if(user.role == Role.ADMIN){
-      let queryBuilder = await this.assistanceRepo.createQueryBuilder('assistance').leftJoinAndSelect('assistance.category','category').leftJoinAndSelect('assistance.user','user'); 
-      if(active != null){
-        queryBuilder = queryBuilder.where('assistance.active = :active', { active : active })
-      }
-      const assistances= await queryBuilder.getMany();
-      let updateAssistance = assistances.map((element)=>{
-        element.category['imagePath'] = `${process.env.BASE_URL}${element.category['imagePath']}`;
-        return element;
-      });
-      return updateAssistance;
-    }else{
+      let queryBuilder = this.assistanceRepo.createQueryBuilder('assistance')
+          .leftJoinAndSelect('assistance.category', 'category');
 
-      let queryBuilder = await this.assistanceRepo.createQueryBuilder('assistance').leftJoinAndSelect('assistance.category','category').where('assistance.user = :user',{user: user.id});
-      // return assistance;
-      if(active != null){
-        queryBuilder = queryBuilder.andWhere('assistance.active = :active', { active : active });
+      if (user.role === Role.ADMIN) {
+          queryBuilder.leftJoinAndSelect('assistance.user', 'user');
+      } else {
+          queryBuilder.where('assistance.user = :userId', { userId: user.id });
       }
-      let assistance =await queryBuilder.getMany();
-      let updateAssistance = assistance.map((element)=>{
-        element.category['imagePath'] = `${process.env.BASE_URL}${element.category['imagePath']}`;
-        return element;
+
+      if (active !== undefined) {
+          queryBuilder = queryBuilder.andWhere('assistance.active = :active', { active });
+      }
+
+      // Calculate offset based on page number and page size
+      const offset = (pageNumber - 1) * size;
+
+      queryBuilder.skip(offset).take(size);
+
+      const assistances = await queryBuilder.getMany();
+
+      let updateAssistance = assistances.map((element) => {
+          element.category['imagePath'] = `${process.env.BASE_URL}${element.category['imagePath']}`;
+          return element;
       });
-      return updateAssistance;
-    }
-   } catch (error) {
-    throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-   }
+
+      return {"assistance": updateAssistance,pageNumber,pageSize : size};
+  } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+  }
   }
 
+
+  async myAssistance(user: any, query: any) {
+    try {
+        const { active, page, pageSize } = query;
+        const pageNumber = parseInt(page, 10) || 1;
+        const size = parseInt(pageSize, 10) || 10; // Default page size is 10
+
+        let queryBuilder = this.assistanceRepo.createQueryBuilder('assistance')
+            .leftJoinAndSelect('assistance.category', 'category');
+
+        if (user.role === Role.ADMIN) {
+            queryBuilder.leftJoinAndSelect('assistance.user', 'user');
+        } else {
+            queryBuilder.where('assistance.user = :userId', { userId: user.id });
+        }
+
+        if (active !== undefined) {
+            queryBuilder = queryBuilder.andWhere('assistance.active = :active', { active });
+        }
+
+        // Calculate offset based on page number and page size
+        const offset = (pageNumber - 1) * size;
+
+        queryBuilder.skip(offset).take(size);
+
+        const assistances = await queryBuilder.getMany();
+
+        let updateAssistance = assistances.map((element) => {
+            element.category['imagePath'] = `${process.env.BASE_URL}${element.category['imagePath']}`;
+            return element;
+        });
+
+        return {"assistance": updateAssistance,pageNumber,pageSize : size};
+    } catch (error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+}
   findOne(id: number) {
     return `This action returns a #${id} assistance`;
   }
@@ -74,6 +113,15 @@ export class AssistanceService {
  async activeInactive(id: string, updateAssistanceDto: any) {
     try {
       let updateAssistance = await this.assistanceRepo.createQueryBuilder('assistance').update(Assistance).set({...updateAssistanceDto}).where('id = :id', { id: id }).execute();
+      return;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    } 
+  }
+
+  async approve(id: string, updateAssistanceDto: any) {
+    try {
+      let updateAssistance = await this.assistanceRepo.createQueryBuilder('assistance').update(Assistance).set({approved: true}).where('id = :id', { id: id }).execute();
       return;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);

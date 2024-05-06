@@ -23,11 +23,21 @@ export class AssistanceController {
   }
 
   @Get('all')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @HasRoles(Role.ADMIN, Role.WORKER)
   @ResponseMessage('Assistance List fetched successfully ')
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Req() req: any, @Query() query : any) {    
     return this.assistanceService.findAll(req.user, query);
+  }
+
+
+  @Get('my')
+  @UseGuards(JwtAuthGuard)
+  @ResponseMessage('Assistance List fetched successfully ')
+  @UseInterceptors(ClassSerializerInterceptor)
+  myAssistance(@Req() req: any, @Query() query : any) {    
+    return this.assistanceService.myAssistance(req.user, query);
   }
 
   @Get(':id')
@@ -37,11 +47,20 @@ export class AssistanceController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @HasRoles(Role.ADMIN)
+  @HasRoles(Role.WORKER,Role.ADMIN)
   @ResponseMessage('Successfully updated')
   @UseInterceptors(ClassSerializerInterceptor)
   update(@Param('id') id: string, @Body() updateAssistanceDto: any) {
     return this.assistanceService.activeInactive(id, updateAssistanceDto);
+  }
+
+  @Patch('approve/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ResponseMessage('Successfully updated')
+  @UseInterceptors(ClassSerializerInterceptor)
+  approveAssistance(@Param('id') id: string, @Body() updateAssistanceDto: any) {
+    return this.assistanceService.approve(id, updateAssistanceDto);
   }
 
   @Delete(':id')

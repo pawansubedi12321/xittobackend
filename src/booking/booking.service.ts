@@ -25,7 +25,7 @@ export class BookingService {
     try {
       let bookingDetails = bookingDto.bookingDetails;
       let paymentDetails = bookingDto.paymentDetails;
-      let nBooking = await this.bookingRepo.create({...bookingDetails, bookedBy: userId});
+      let nBooking = await this.bookingRepo.create({...bookingDetails, bookedBy: userId,orderId: generateUniqueString()});
       let saveBooking = await this.bookingRepo.save(nBooking);
       // return saveBooking.assignTo;
       let sTransaction  = await this.transactionService.create({...paymentDetails,booking: saveBooking.id});
@@ -38,12 +38,63 @@ export class BookingService {
   async findAll(userId : string, role: String) {
     
     try {
-      let queryBuilder  =  this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo','assignTo');
+      let queryBuilder  =  this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo','assignTo').leftJoinAndSelect("booking.bookedProblem", "problem");
       if(role != Role.ADMIN){
         queryBuilder = queryBuilder.where('booking.bookedBy = :userId', { userId: userId })
       }
       let bookings  = await queryBuilder.getMany();
-      return bookings;
+      return bookings.map((data)=>{
+        let assignTo;
+        let bookedProblem;
+        if(data.assignTo != null){
+          let user = JSON.stringify(data.assignTo);
+          let realData = JSON.parse(user);
+          realData.profile_url = `${process.env.BASE_URL}${realData.profile_url}`;
+          assignTo = JSON.stringify({id: realData.id, name: realData.name, phone: realData.phone, profile_url: realData.profile_url});
+        }
+
+        if(data.bookedProblem != null){
+          let probl = JSON.stringify(data.bookedProblem);
+          let realData = JSON.parse(probl);
+          realData.imagePath = `${process.env.BASE_URL}${realData.imagePath}`;
+          bookedProblem = JSON.stringify({id: realData.id, imagePath : realData.imagePath,shortDescription: realData.shortDescription,price:realData.price});
+        }
+       
+        return {...data,assignTo,bookedProblem};
+      });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);  
+    }
+  }
+
+
+  async assignToAssistance(userId : string, role: String) {
+    
+    try {
+      let queryBuilder  =  this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo','assignTo').leftJoinAndSelect("booking.bookedProblem", "problem");
+      if(role != Role.ADMIN){
+        queryBuilder = queryBuilder.where('booking.assignTo = :userId', { userId: userId })
+      }
+      let bookings  = await queryBuilder.getMany();
+      return bookings.map((data)=>{
+        let assignTo;
+        let bookedProblem;
+        if(data.assignTo != null){
+          let user = JSON.stringify(data.assignTo);
+          let realData = JSON.parse(user);
+          realData.profile_url = `${process.env.BASE_URL}${realData.profile_url}`;
+          assignTo = JSON.stringify({id: realData.id, name: realData.name, phone: realData.phone, profile_url: realData.profile_url});
+        }
+
+        if(data.bookedProblem != null){
+          let probl = JSON.stringify(data.bookedProblem);
+          let realData = JSON.parse(probl);
+          realData.imagePath = `${process.env.BASE_URL}${realData.imagePath}`;
+          bookedProblem = JSON.stringify({id: realData.id, imagePath : realData.imagePath,shortDescription: realData.shortDescription,price:realData.price});
+        }
+       
+        return {...data,assignTo,bookedProblem};
+      });
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);  
     }
@@ -152,4 +203,15 @@ export class BookingService {
   remove(id: number) {
     return `This action removes a #${id} booking`;
   }
+}
+
+
+function generateUniqueString(): string {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }

@@ -28,6 +28,14 @@ export class BookingController {
     return this.bookingService.findAll(req.user.id, req.user.role);
   }
 
+  @Get('assistance/all')
+  @UseGuards(JwtAuthGuard)
+  @ResponseMessage('Booking fetched successfully')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getAllByAssistance(@Req() req : any) {
+    return this.bookingService.assignToAssistance(req.user.id, req.user.role);
+  }
+
   @Get('filter')
   @UseGuards(JwtAuthGuard)
   @ResponseMessage('Booking fetched successfully')

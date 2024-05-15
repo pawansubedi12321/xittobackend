@@ -35,4 +35,8 @@ export class FilterBookingDto {
 
     @IsOptional()
     transactionMode : string
+
+    
+    @IsOptional()
+    catId : string
 }

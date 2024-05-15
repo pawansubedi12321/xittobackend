@@ -6,10 +6,11 @@ import { Booking } from './entities/booking.entity';
 import { TransactionService } from 'src/transaction/transaction.service';
 import { Transaction } from 'src/transaction/entities/transaction.entity';
 import { Assistance } from 'src/assistance/entities/assistance.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Module({
   imports : [
-    TypeOrmModule.forFeature([Booking, Transaction, Assistance]),
+    TypeOrmModule.forFeature([Booking, Transaction, Assistance, Category ]),
   ],
   controllers: [BookingController],
   providers: [BookingService, TransactionService]

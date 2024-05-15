@@ -36,6 +36,23 @@ export class BookingController {
     return this.bookingService.assignToAssistance(req.user.id, req.user.role);
   }
 
+
+  @Get('assistance/filter')
+  @UseGuards(JwtAuthGuard)
+  @ResponseMessage('Booking fetched successfully')
+  @UseInterceptors(ClassSerializerInterceptor)
+  filterByAssistance(@Req() req : any, @Body() bookingDto: FilterBookingDto, @Query() query: any) {
+    return this.bookingService.filterBookingByAssistance(req.user.id,query,req.user.role);
+  }
+
+  @Get('assistance/count')
+  @UseGuards(JwtAuthGuard)
+  @ResponseMessage('Booking fetched successfully')
+  @UseInterceptors(ClassSerializerInterceptor)
+  getAssistanceCount(@Req() req : any) {
+    return this.bookingService.getAssistanceCount(req.user.id);
+  }
+
   @Get('filter')
   @UseGuards(JwtAuthGuard)
   @ResponseMessage('Booking fetched successfully')

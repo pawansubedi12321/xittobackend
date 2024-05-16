@@ -72,7 +72,7 @@ export class AssistanceService {
 
   async myAssistance(user: any, query: any) {
     try {
-        const { active, page, pageSize } = query;
+        const { active, page, pageSize ,approved } = query;
         const pageNumber = parseInt(page, 10) || 1;
         const size = parseInt(pageSize, 10) || 10; // Default page size is 10
 
@@ -80,7 +80,7 @@ export class AssistanceService {
             .leftJoinAndSelect('assistance.category', 'category');
 
         if (user.role === Role.ADMIN) {
-            queryBuilder.leftJoinAndSelect('assistance.user', 'user');
+            queryBuilder.leftJoin('assistance.user', 'user').addSelect(['user.name', 'user.profile_url', 'user.phone','user.id']);
         } else {
             queryBuilder.where('assistance.user = :userId', { userId: user.id });
         }
@@ -89,46 +89,105 @@ export class AssistanceService {
             queryBuilder = queryBuilder.andWhere('assistance.active = :active', { active });
         }
 
+
+        if (approved !== undefined) {
+          queryBuilder = queryBuilder.andWhere('assistance.approved = :approved', { approved });
+      }
+
+        queryBuilder.orderBy('assistance.created_at', 'DESC');
+
         // Calculate offset based on page number and page size
         const offset = (pageNumber - 1) * size;
-
         queryBuilder.skip(offset).take(size);
-
-        const assistances = await queryBuilder.getMany();
-
+        // const assistances = await queryBuilder.getMany();
+        const [assistances, total] = await queryBuilder.getManyAndCount();
         let updateAssistance = assistances.map((element) => {
             element.category['imagePath'] = `${process.env.BASE_URL}${element.category['imagePath']}`;
+            if(element.user != null){
+              element.user['profile_url'] = `${process.env.BASE_URL}${element.user['profile_url']}`;
+            }
             return element;
         });
 
-        return {"assistance": updateAssistance,pageNumber,pageSize : size};
+        const totalPages = Math.ceil(total / size);
+        return {"assistance": updateAssistance,pageNumber,pageSize : size,totalPages};
     } catch (error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 }
+
+
   findOne(id: number) {
     return `This action returns a #${id} assistance`;
   }
 
- async activeInactive(id: string, updateAssistanceDto: any) {
+ async updateAssistnce(id: string, updateAssistanceDto: any, user: any) {
     try {
-      let updateAssistance = await this.assistanceRepo.createQueryBuilder('assistance').update(Assistance).set({...updateAssistanceDto}).where('id = :id', { id: id }).execute();
-      return;
+      let queryBuilder = this.assistanceRepo.createQueryBuilder('assistance');
+      if(user.role != Role.ADMIN){
+        queryBuilder = queryBuilder.leftJoinAndSelect('assistance.user','user').where('user.id = :userId', {userId : user.id});
+      }
+      let updateAssistance= await queryBuilder.update(Assistance).andWhere('assistance.id = :id', { id: id }).set({...updateAssistanceDto}).execute();
+      
+      // let updateAssistance = await this.assistanceRepo.createQueryBuilder('assistance').update(Assistance).set({...updateAssistanceDto}).where('id = :id', { id: id }).execute();
+      if(updateAssistance.affected != 0){
+        return;
+      }else{
+      throw new HttpException("Unable to update data", HttpStatus.BAD_REQUEST);
+      }
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     } 
   }
 
-  async approve(id: string, updateAssistanceDto: any) {
+
+  async approve(id: string, updateAssistanceDto: any, query: any) {
     try {
-      let updateAssistance = await this.assistanceRepo.createQueryBuilder('assistance').update(Assistance).set({approved: true}).where('id = :id', { id: id }).execute();
-      return;
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-    } 
+      const status = query.status;
+      if (!status) {
+        throw new HttpException("Please provide a status", HttpStatus.BAD_REQUEST);
+      }
+
+      const approved = convertStringToBoolean(status);
+
+  
+      const updateResult = await this.assistanceRepo.createQueryBuilder('assistance')
+        .update(Assistance)
+        .set({ approved: approved })
+        .where('id = :id', { id })
+        .execute();
+  
+      if (updateResult.affected == 0) {
+        throw new HttpException("No assistance found with the given ID or no change in status", HttpStatus.NOT_FOUND);
+      }
+  
+      return {
+        message: 'Assistance status updated successfully',
+        status,
+        id,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   remove(id: number) {
     return `This action removes a #${id} assistance`;
+  }
+}
+
+
+
+
+function convertStringToBoolean(str: string): boolean {
+  const trueValues = ["true", "1", "yes"];
+  const falseValues = ["false", "0", "no"];
+
+  if (trueValues.includes(str.toLowerCase())) {
+    return true;
+  } else if (falseValues.includes(str.toLowerCase())) {
+    return false;
+  } else {
+    throw new HttpException("Invalid status value. Acceptable values are 'true', 'false', '1', '0', 'yes', or 'no'", HttpStatus.BAD_REQUEST);
   }
 }

@@ -50,8 +50,8 @@ export class AssistanceController {
   @HasRoles(Role.WORKER,Role.ADMIN)
   @ResponseMessage('Successfully updated')
   @UseInterceptors(ClassSerializerInterceptor)
-  update(@Param('id') id: string, @Body() updateAssistanceDto: any) {
-    return this.assistanceService.activeInactive(id, updateAssistanceDto);
+  update(@Param('id') id: string, @Body() updateAssistanceDto: any, @Req() req: any) {    
+    return this.assistanceService.updateAssistnce(id, updateAssistanceDto, req.user);
   }
 
   @Patch('approve/:id')
@@ -59,8 +59,8 @@ export class AssistanceController {
   @HasRoles(Role.ADMIN)
   @ResponseMessage('Successfully updated')
   @UseInterceptors(ClassSerializerInterceptor)
-  approveAssistance(@Param('id') id: string, @Body() updateAssistanceDto: any) {
-    return this.assistanceService.approve(id, updateAssistanceDto);
+  approveAssistance(@Param('id') id: string, @Query() query ,@Body() updateAssistanceDto: any) {
+    return this.assistanceService.approve(id, updateAssistanceDto, query);
   }
 
   @Delete(':id')

@@ -26,7 +26,7 @@ export class BookingService {
     try {
       let bookingDetails = bookingDto.bookingDetails;
       let paymentDetails = bookingDto.paymentDetails;
-      let nBooking = await this.bookingRepo.create({ ...bookingDetails, bookedBy: userId, orderId: generateUniqueString() });
+      let nBooking = await this.bookingRepo.create({ ...bookingDetails, bookedBy: userId, orderId: generateUniqueString(),location : JSON.stringify(bookingDetails.location)});
       let saveBooking = await this.bookingRepo.save(nBooking);
       // return saveBooking.assignTo;
       let sTransaction = await this.transactionService.create({ ...paymentDetails, booking: saveBooking.id });

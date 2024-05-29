@@ -27,8 +27,7 @@ export class CreateBookingDto {
     timePeriod: string
 
     @IsNotEmpty()
-    @IsString()
-    location: string
+    location: any
 
     @IsNotEmpty()
     @IsString()

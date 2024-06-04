@@ -40,7 +40,7 @@ export class BookingService {
     try {
       let queryBuilder = this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo', 'assignTo').leftJoinAndSelect("booking.bookedProblem", "problem").leftJoinAndSelect("problem.category", "category");
       if (role != Role.ADMIN) {
-        queryBuilder = queryBuilder.where('booking.bookedBy = :userId', { userId: userId });
+        queryBuilder = queryBuilder.where('booking.bookedBy = :userId', { userId: userId }).leftJoinAndSelect('booking.bookedBy', 'bookedBy');
       } else {
         queryBuilder = queryBuilder.leftJoinAndSelect('booking.bookedBy', 'bookedBy');
       }
@@ -88,7 +88,7 @@ export class BookingService {
     try {
       let queryBuilder = this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo', 'assignTo').leftJoinAndSelect("booking.bookedProblem", "problem").leftJoinAndSelect("problem.category", "category");
       if (role != Role.ADMIN) {
-        queryBuilder = queryBuilder.where('booking.assignTo = :userId', { userId: userId });
+        queryBuilder = queryBuilder.where('booking.assignTo = :userId', { userId: userId }).leftJoinAndSelect('booking.bookedBy', 'bookedBy');
       } 
       let bookings = await queryBuilder.getMany();
       return bookings.map((data) => {
@@ -133,7 +133,7 @@ export class BookingService {
     try {
       let queryBuilder = this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo', 'assignTo').leftJoinAndSelect("booking.bookedProblem", "problem").leftJoinAndSelect("problem.category", "category");
       if (role != Role.ADMIN) {
-        queryBuilder = queryBuilder.where('booking.bookedBy = :userId', { userId: userId });
+        queryBuilder = queryBuilder.where('booking.bookedBy = :userId', { userId: userId }).leftJoinAndSelect('booking.bookedBy', 'bookedBy');
       } else {
         queryBuilder = queryBuilder.leftJoinAndSelect('booking.bookedBy', 'bookedBy');
       }
@@ -276,7 +276,7 @@ async filterBookingByAssistance(userId: string, filterDto: FilterBookingDto, rol
   try {
     let queryBuilder = this.bookingRepo.createQueryBuilder('booking').orderBy('booking.created_at', 'DESC').leftJoinAndSelect('booking.assignTo', 'assignTo').leftJoinAndSelect("booking.bookedProblem", "problem").leftJoinAndSelect("problem.category", "category");
     if (role != Role.ADMIN) {
-      queryBuilder = queryBuilder.where('booking.assignTo = :userId', { userId: userId });
+      queryBuilder = queryBuilder.where('booking.assignTo = :userId', { userId: userId }).leftJoinAndSelect('booking.bookedBy', 'bookedBy');
     } else {
       queryBuilder = queryBuilder.leftJoinAndSelect('booking.bookedBy', 'bookedBy');
     }
